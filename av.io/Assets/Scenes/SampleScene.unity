@@ -151,8 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c1a54bfb64c3348b1fc8ce15ad4a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 90
-  acceleration: 50
+  maxRotationSpeed: 90
+  currentRotationSpeed: 0
+  maxAcceleration: 50
+  currentAcceleration: 0
 --- !u!50 &251777514
 Rigidbody2D:
   serializedVersion: 5
@@ -178,7 +180,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!61 &251777515
 BoxCollider2D:

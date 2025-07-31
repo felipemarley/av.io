@@ -3,8 +3,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private float verticalInput;
-    [SerializeField] private float rotationSpeed = 30;
-    [SerializeField] private float acceleration = 15;
+    [SerializeField] private float rotationFactor = 5;
+
+    private bool isEngineOn = true;
+    [SerializeField] private float maxAcceleration = 15;
+    [SerializeField] private float currentAcceleration = 15;
 
     private Rigidbody2D rb;
 
@@ -12,12 +15,17 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        ToggleEngine("on");
     }
 
     // Update is called once per frame
     void Update()
     {
         verticalInput = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetKeyDown(KeyCode.E)) {
+            ToggleEngine();
+        };
     }
 
     void FixedUpdate()
@@ -29,12 +37,42 @@ public class PlayerMovement : MonoBehaviour
     private void RotatePlayer()
     {
         float currentRotation = rb.rotation;
-        rb.MoveRotation(currentRotation + rotationSpeed * verticalInput * Time.fixedDeltaTime);
+        float currentRotationSpeed = currentAcceleration * rotationFactor * Time.fixedDeltaTime;
+
+
+        rb.MoveRotation(currentRotation + currentRotationSpeed * verticalInput);
     }
 
     private void MovePlayer()
     {
+
         Vector2 direction = transform.right.normalized;
-        rb.AddForce(direction * acceleration);
+        rb.AddForce(direction * currentAcceleration);
+    }
+
+    private void ToggleEngine()
+    {
+        if(isEngineOn)
+        {
+            ToggleEngine("off");
+        } else
+        {
+            ToggleEngine("on");
+        }
+    }
+
+    private void ToggleEngine(string on)
+    {
+        if(on.ToLower() == "on")
+        {
+            isEngineOn = true;
+            rb.gravityScale = 0;
+            currentAcceleration = maxAcceleration;
+        } else 
+        {
+            isEngineOn = false;
+            rb.gravityScale = 1;
+            currentAcceleration = 0;
+        }
     }
 }
