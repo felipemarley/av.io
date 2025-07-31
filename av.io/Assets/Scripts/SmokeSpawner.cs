@@ -2,19 +2,29 @@ using UnityEngine;
 
 public class SmokeSpawner : MonoBehaviour
 {
+    public static SmokeSpawner instance;
+
     [SerializeField] private GameObject smokePrefab;
     [SerializeField] private GameObject smokeTrail;
     [SerializeField] private float cooldown;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
-        InvokeRepeating(nameof(SpawnSmoke), 0f, cooldown);
+        instance = this;
     }
 
     void SpawnSmoke()
     {
         GameObject smokeInstance = Instantiate(smokePrefab, transform.position, Quaternion.identity);
         smokeInstance.transform.parent = smokeTrail.transform;
+    }
+
+    public void TurnOnSmoke()
+    {
+        InvokeRepeating(nameof(SpawnSmoke), 0f, cooldown);
+    }
+    public void TurnOffSmoke()
+    {
+        CancelInvoke(nameof(SpawnSmoke));
     }
 }

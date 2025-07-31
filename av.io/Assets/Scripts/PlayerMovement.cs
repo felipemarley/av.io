@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private bool isEngineOn = true;
-    [SerializeField] private float maxAcceleration = 10;
-    [SerializeField] private float currentAcceleration = 10;
+    public float maxAcceleration = 10;
+    public float currentAcceleration = 10;
 
     [SerializeField] private float drag = 0.95f;
 
@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void ToggleEngine(string on)
+    public void ToggleEngine(string on)
     {
         if(on.ToLower() == "on")
         {
