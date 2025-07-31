@@ -2,19 +2,25 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float verticalInput;
-    [SerializeField] private float rotationFactor = 5;
-
     private bool isEngineOn = true;
-    [SerializeField] private float maxAcceleration = 15;
-    [SerializeField] private float currentAcceleration = 15;
+    [SerializeField] private float maxAcceleration = 10;
+    [SerializeField] private float currentAcceleration = 10;
+
+    [SerializeField] private float drag = 0.95f;
+
+    private float verticalInput;
+    [SerializeField] private float rotationSpeedFactor = 5;
 
     private Rigidbody2D rb;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         ToggleEngine("on");
     }
 
@@ -23,29 +29,29 @@ public class PlayerMovement : MonoBehaviour
     {
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.E)) {
+        if (Input.GetKeyDown(KeyCode.E)) 
             ToggleEngine();
-        };
     }
 
     void FixedUpdate()
     {
         RotatePlayer();
         MovePlayer();
+
+        if (isEngineOn)
+            ApplyDrag();
     }
 
     private void RotatePlayer()
     {
         float currentRotation = rb.rotation;
-        float currentRotationSpeed = currentAcceleration * rotationFactor * Time.fixedDeltaTime;
-
+        float currentRotationSpeed = currentAcceleration * rotationSpeedFactor * Time.fixedDeltaTime;
 
         rb.MoveRotation(currentRotation + currentRotationSpeed * verticalInput);
     }
 
     private void MovePlayer()
     {
-
         Vector2 direction = transform.right.normalized;
         rb.AddForce(direction * currentAcceleration);
     }
@@ -75,4 +81,10 @@ public class PlayerMovement : MonoBehaviour
             currentAcceleration = 0;
         }
     }
+
+    private void ApplyDrag()
+    {
+        rb.linearVelocity *= drag;
+    }
+
 }
