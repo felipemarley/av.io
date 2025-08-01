@@ -12,10 +12,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rotationSpeedFactor = 5;
 
     private Rigidbody2D rb;
+    private Animator animator;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -72,11 +74,15 @@ public class PlayerMovement : MonoBehaviour
         if(on.ToLower() == "on")
         {
             isEngineOn = true;
+            animator.SetBool("isEngineOn", true);
+
             rb.gravityScale = 0;
             currentAcceleration = maxAcceleration;
         } else 
         {
             isEngineOn = false;
+            animator.SetBool("isEngineOn", false);
+
             rb.gravityScale = 1;
             currentAcceleration = 0;
         }
