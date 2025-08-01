@@ -27,6 +27,7 @@ public class SmokeBehavior : MonoBehaviour
             timer += Time.deltaTime;
             float progress = timer / lifetime;
 
+            // Shrink with time
             //transform.localScale = Vector3.Lerp(initialScale, Vector3.zero, progress);
 
             Color targetColor = new Color(initialColor.r, initialColor.g, initialColor.b, 0f);
